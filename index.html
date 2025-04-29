@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Jananipriya - From My Heart</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Lato:wght@300;400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Lato', sans-serif;
+            overflow-x: hidden;
+            background-color: #000;
+            color: #fff;
+            transition: background-color 2s ease;
+        }
+        
+        .scene {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1.5s ease, transform 1.5s ease;
+            text-align: center;
+            padding: 2rem;
+            visibility: hidden; /* Added to fully hide inactive scenes */
+        }
+        
+        .scene.active {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible; /* Make active scene visible */
+        }
+        
+        .scene h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: #f8d0e9;
+            text-shadow: 0 0 10px rgba(255, 182, 193, 0.7);
+        }
+        
+        .scene p {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            background-color: rgba(255, 182, 193, 0.3);
+            color: white;
+            border: 2px solid #f8d0e9;
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Lato', sans-serif;
+            margin-top: 2rem;
+        }
+        
+        .btn:hover {
+            background-color: rgba(255, 182, 193, 0.6);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 182, 193, 0.4);
+        }
+        
+        #scene1 {
+            background-color: #000;
+            z-index: 5;
+        }
+        
+        #scene2 {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            z-index: 4;
+        }
+        
+        #scene3 {
+            background: linear-gradient(135deg, #8e2de2, #4a00e0);
+            z-index: 3;
+        }
+        
+        #scene4 {
+            background: linear-gradient(to bottom, #1a2a6c, #b21f1f, #fdbb2d);
+            z-index: 2;
+        }
+        
+        #finalScene {
+            background: linear-gradient(135deg, #FC466B, #3F5EFB);
+            z-index: 1;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: #fff;
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle 6s infinite ease-in-out;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        
+        .clouds {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        
+        .cloud {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            filter: blur(20px);
+        }
+        
+        .flower-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 2rem auto;
+        }
+        
+        .flower {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background-color: #ff6b95;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ff6b95;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.5s ease;
+        }
+        
+        .flower.bloom {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .petal {
+            position: absolute;
+            width: 30px;
+            height: 80px;
+            background-color: #ff6b95;
+            border-radius: 50%;
+            transform-origin: bottom center;
+        }
+        
+        .couple {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 2rem auto;
+        }
+        
+        .person {
+            position: absolute;
+            width: 60px;
+            height: 150px;
+            bottom: 0;
+        }
+        
+        .person.left {
+            left: 80px;
+            background: radial-gradient(circle at 50% 30%, #f8d0e9 30px, transparent 30px),
+                        linear-gradient(#333 70px, #4a8cca 70px, #4a8cca 150px);
+        }
+        
+        .person.right {
+            right: 80px;
+            background: radial-gradient(circle at 50% 30%, #f8d0e9 30px, transparent 30px),
+                        linear-gradient(#333 70px, #ff6b95 70px, #ff6b95 150px);
+        }
+        
+        .heart {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #ff6b95;
+            transform: rotate(45deg) scale(0);
+            top: 50%;
+            left: 50%;
+            margin-left: -15px;
+            margin-top: -15px;
+            animation: pulse 1.5s ease infinite;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        .heart:before,
+        .heart:after {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #ff6b95;
+            border-radius: 50%;
+        }
+        
+        .heart:before {
+            top: -15px;
+            left: 0;
+        }
+        
+        .heart:after {
+            top: 0;
+            left: -15px;
+        }
+        
+        .heart.visible {
+            opacity: 1;
+            transform: rotate(45deg) scale(1);
+        }
+        
+        @keyframes pulse {
+            0% { transform: rotate(45deg) scale(1); }
+            50% { transform: rotate(45deg) scale(1.2); }
+            100% { transform: rotate(45deg) scale(1); }
+        }
+        
+        .message {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 182, 193, 0.7);
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            bottom: 10%;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease 1s;
+        }
+        
+        .message.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        #finalMessage {
+            font-size: 4rem;
+            background: -webkit-linear-gradient(#fff, #f8d0e9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 3rem 0;
+        }
+        
+        #typewriter {
+            height: 6rem;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #fff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .angel-wings {
+            position: absolute;
+            width: 300px;
+            height: 200px;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 2s ease;
+        }
+        
+        .wing {
+            position: absolute;
+            height: 200px;
+            width: 120px;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.1) 70%);
+            top: 0;
+            border-radius: 150px 50px;
+            transform-origin: center right;
+            filter: blur(5px);
+        }
+        
+        .wing.left {
+            left: 0;
+            transform: scaleX(-1) rotate(10deg);
+            animation: wingBeatLeft 4s infinite ease-in-out;
+        }
+        
+        .wing.right {
+            right: 0;
+            transform: rotate(10deg);
+            animation: wingBeatRight 4s infinite ease-in-out;
+        }
+        
+        @keyframes wingBeatLeft {
+            0%, 100% { transform: scaleX(-1) rotate(10deg); }
+            50% { transform: scaleX(-1) rotate(30deg); }
+        }
+        
+        @keyframes wingBeatRight {
+            0%, 100% { transform: rotate(10deg); }
+            50% { transform: rotate(30deg); }
+        }
+        
+        .angel-wings.visible {
+            opacity: 1;
+        }
+        
+        #rainbowPath {
+            position: absolute;
+            width: 100%;
+            height: 100px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(to right, 
+                violet, indigo, blue, green, yellow, orange, red,
+                violet, indigo, blue, green, yellow, orange, red);
+            background-size: 200% 100%;
+            clip-path: polygon(0 100%, 100% 100%, 100% 50%, 0 50%);
+            animation: moveRainbow 10s linear infinite;
+            opacity: 0;
+            transition: opacity 1s ease, transform 2s ease;
+            transform: translateY(100px);
+        }
+        
+        #rainbowPath.visible {
+            opacity: 0.7;
+            transform: translateY(0);
+        }
+        
+        @keyframes moveRainbow {
+            0% { background-position: 0% 0%; }
+            100% { background-position: -100% 0%; }
+        }
+        
+        .music-note {
+            position: absolute;
+            font-size: 2rem;
+            color: white;
+            opacity: 0;
+            animation: floatUp 4s ease-in-out forwards;
+        }
+        
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(-200px) rotate(20deg); opacity: 0; }
+        }
+        
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background: linear-gradient(to right, #ff6b95, #f8d0e9);
+            width: 0%;
+            transition: width 0.5s ease;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div id="progress-bar"></div>
+    
+    <div id="scene1" class="scene active">
+        <h1>Jananipriya...</h1>
+        <p>I know words might not be enough,<br>but I hope this journey will show you how sorry I am.</p>
+        <button class="btn" id="startJourney">Begin</button>
+    </div>
+    
+    <div id="scene2" class="scene">
+        <h1>I'm Sorry</h1>
+        <p>For every moment I hurt you.<br>For every word that shouldn't have been said.<br>For everything that went wrong.</p>
+        <div id="typewriter"></div>
+        <button class="btn" id="continueBtn1">Continue</button>
+    </div>
+    
+    <div id="scene3" class="scene">
+        <h1>Follow Me</h1>
+        <p>Let me take you somewhere special.<br>A place where my heart can speak to yours.</p>
+        <div class="clouds" id="clouds"></div>
+        <button class="btn" id="continueBtn2">Follow</button>
+    </div>
+    
+    <div id="scene4" class="scene">
+        <h1>Our Dream</h1>
+        <p>To a place where angels whisper and dreams come true.<br>Where my love for you is as pure as the sky.</p>
+        <div class="angel-wings" id="wings">
+            <div class="wing left"></div>
+            <div class="wing right"></div>
+        </div>
+        <button class="btn" id="continueBtn3">Enter Our Dream</button>
+    </div>
+    
+    <div id="finalScene" class="scene">
+        <div id="rainbowPath"></div>
+        <div id="stars"></div>
+        <div class="flower-container" id="flower-container"></div>
+        <div class="couple">
+            <div class="person left"></div>
+            <div class="person right"></div>
+            <div class="heart" id="heart"></div>
+        </div>
+        <div class="message" id="finalMessageContainer">
+            <div id="finalMessage">Jananipriya, I'm Sorry</div>
+            <p>Can you forgive me and let our love bloom again?</p>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const scenes = document.querySelectorAll('.scene');
+        const progressBar = document.getElementById('progress-bar');
+        const startButton = document.getElementById('startJourney');
+        const continueBtn1 = document.getElementById('continueBtn1');
+        const continueBtn2 = document.getElementById('continueBtn2');
+        const continueBtn3 = document.getElementById('continueBtn3');
+        const typewriter = document.getElementById('typewriter');
+        const clouds = document.getElementById('clouds');
+        const wings = document.getElementById('wings');
+        const stars = document.getElementById('stars');
+        const heart = document.getElementById('heart');
+        const finalMessageContainer = document.getElementById('finalMessageContainer');
+        const rainbowPath = document.getElementById('rainbowPath');
+        const flowerContainer = document.getElementById('flower-container');
+        
+        // Current scene tracker
+        let currentScene = 0;
+        
+        // Update progress bar
+        function updateProgress(sceneIndex) {
+            const progress = ((sceneIndex + 1) / scenes.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+        
+        // Show scene based on index
+        function showScene(index) {
+            console.log(`Showing scene ${index}`);
+            
+            // Hide all scenes
+            scenes.forEach((scene, i) => {
+                scene.classList.remove('active');
+            });
+            
+            // Show the current scene
+            scenes[index].classList.add('active');
+            currentScene = index;
+            updateProgress(index);
+            
+            // Special effects for specific scenes
+            if (index === 1) {
+                setTimeout(typewriterEffect, 500);
+            }
+            
+            if (index === 2) {
+                createClouds();
+            }
+            
+            if (index === 3) {
+                setTimeout(() => {
+                    wings.classList.add('visible');
+                }, 800);
+            }
+            
+            if (index === 4) {
+                createStars();
+                setTimeout(() => {
+                    heart.classList.add('visible');
+                    finalMessageContainer.classList.add('visible');
+                    rainbowPath.classList.add('visible');
+                    createFlowers();
+                    createMusicNotes();
+                }, 1000);
+            }
+        }
+        
+        // Typewriter effect
+        function typewriterEffect() {
+            const text = "I miss your smile, your laugh, your touch. I miss us.";
+            let i = 0;
+            typewriter.textContent = '';
+            
+            const typing = setInterval(() => {
+                if (i < text.length) {
+                    typewriter.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typing);
+                }
+            }, 80);
+        }
+        
+        // Create cloud effects
+        function createClouds() {
+            clouds.innerHTML = ''; // Clear any existing clouds
+            for (let i = 0; i < 10; i++) {
+                const cloud = document.createElement('div');
+                cloud.classList.add('cloud');
+                
+                const size = Math.random() * 200 + 50;
+                const left = Math.random() * window.innerWidth;
+                const top = Math.random() * window.innerHeight;
+                const opacity = Math.random() * 0.4 + 0.1;
+                
+                cloud.style.width = `${size}px`;
+                cloud.style.height = `${size}px`;
+                cloud.style.left = `${left}px`;
+                cloud.style.top = `${top}px`;
+                cloud.style.opacity = opacity;
+                
+                // Add animation with simple CSS transitions
+                cloud.style.transition = 'transform 15s ease-in-out';
+                cloud.style.transform = 'translate(0, 0)';
+                
+                clouds.appendChild(cloud);
+                
+                // Apply drift animation
+                setTimeout(() => {
+                    const moveX = Math.random() * 100 - 50;
+                    const moveY = Math.random() * 100 - 50;
+                    cloud.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                }, 100);
+            }
+        }
+        
+        // Create star background
+        function createStars() {
+            if (!stars) return;
+            stars.innerHTML = ''; // Clear existing stars
+            
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                const size = Math.random() * 3 + 1;
+                const left = Math.random() * window.innerWidth;
+                const top = Math.random() * window.innerHeight;
+                const delay = Math.random() * 6;
+                
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${left}px`;
+                star.style.top = `${top}px`;
+                star.style.animationDelay = `${delay}s`;
+                
+                stars.appendChild(star);
+            }
+        }
+        
+        // Create flowers animation
+        function createFlowers() {
+            flowerContainer.innerHTML = ''; // Clear existing flowers
+            const flowerCount = 5;
+            const colors = ['#ff6b95', '#f8d0e9', '#ffb6c1', '#ee82ee', '#da70d6'];
+            
+            for (let i = 0; i < flowerCount; i++) {
+                const flower = document.createElement('div');
+                flower.classList.add('flower');
+                
+                // Position flower
+                const angle = (i / flowerCount) * Math.PI * 2;
+                const radius = 100;
+                const x = Math.cos(angle) * radius + 150 - 40;
+                const y = Math.sin(angle) * radius + 150 - 40;
+                
+                flower.style.left = `${x}px`;
+                flower.style.top = `${y}px`;
+                flower.style.backgroundColor = colors[i % colors.length];
+                
+                // Create petals
+                for (let j = 0; j < 6; j++) {
+                    const petal = document.createElement('div');
+                    petal.classList.add('petal');
+                    petal.style.backgroundColor = colors[i % colors.length];
+                    petal.style.transform = `rotate(${j * 60}deg)`;
+                    flower.appendChild(petal);
+                }
+                
+                flowerContainer.appendChild(flower);
+                
+                // Animate bloom with delay
+                setTimeout(() => {
+                    flower.classList.add('bloom');
+                }, 500 + i * 300);
+            }
+        }
+        
+        // Create music notes
+        function createMusicNotes() {
+            const notes = ['♪', '♫', '♩', '♬', '♭'];
+            let noteInterval;
+            
+            // Clear any existing interval
+            if (window.noteInterval) {
+                clearInterval(window.noteInterval);
+            }
+            
+            window.noteInterval = setInterval(() => {
+                const note = document.createElement('div');
+                note.classList.add('music-note');
+                note.textContent = notes[Math.floor(Math.random() * notes.length)];
+                
+                const left = Math.random() * window.innerWidth;
+                note.style.left = `${left}px`;
+                note.style.bottom = '0';
+                
+                document.body.appendChild(note);
+                
+                // Remove note after animation completes
+                setTimeout(() => {
+                    if (document.body.contains(note)) {
+                        document.body.removeChild(note);
+                    }
+                }, 4000);
+            }, 800);
+        }
+        
+        // Button click handlers
+        startButton.addEventListener('click', function() {
+            showScene(1);
+        });
+        
+        continueBtn1.addEventListener('click', function() {
+            showScene(2);
+        });
+        
+        continueBtn2.addEventListener('click', function() {
+            showScene(3);
+        });
+        
+        continueBtn3.addEventListener('click', function() {
+            showScene(4);
+        });
+        
+        // Initialize the first scene
+        updateProgress(0);
+    </script>
+</body>
+</html>
